@@ -10,44 +10,61 @@ public class letterCollision : MonoBehaviour
     public TMP_Text slot3;
     public TMP_Text slot4;
     public TMP_Text slot5;
+    public SpringJoint springJoint;
+
+    public Rigidbody projectile;
+    Vector3 startingPosition = new Vector3(0.25f, 1.12f, 31f);
+
 
     // public Transform 
     void OnCollisionEnter(Collision collisionInfo) {
-        Debug.Log (collisionInfo.collider.name);
+      if(collisionInfo.collider.name == "Ground"){
+        // resets the spring joint for the slingshot
+        springJoint.breakForce = Mathf.Infinity;
 
-        if(collisionInfo.collider.tag == "Letter Slot"){
-            Debug.Log("Letter hit a letter slot");
-            if(slotText && letterText){
-                slotText.text = letterText.text;
-            }
+        // Reset the position of the projectile
+        projectile.velocity = Vector3.zero;
+        projectile.angularVelocity = Vector3.zero;
+        projectile.transform.position = startingPosition;
+        // springJoint.connectedAnchor = startingPosition;
 
-            if(letterText){
-                string slotNumber = collisionInfo.collider.name.Substring(collisionInfo.collider.name.Length - 1);
-                switch(slotNumber) 
-                {
-                  case "1":
-                    slot1.text = letterText.text;
-                    break;
-                  case "2":
-                    slot2.text = letterText.text;
-                    break;
-                  case "3":
-                    slot3.text = letterText.text;
-                    break;
-                  case "4":
-                    slot4.text = letterText.text;
-                    break;
-                  case "5":
-                    slot5.text = letterText.text;
-                    break;
-                  default:
-                    break;
-                }
+      }
+
+      if(collisionInfo.collider.tag == "Letter Slot"){
+
+          Debug.Log (collisionInfo.collider.name);
+          Debug.Log("Letter hit a letter slot");
+          if(slotText && letterText){
+              slotText.text = letterText.text;
+          }
+
+          if(letterText){
+              string slotNumber = collisionInfo.collider.name.Substring(collisionInfo.collider.name.Length - 1);
+              switch(slotNumber) 
+              {
+                case "1":
+                  slot1.text = letterText.text;
+                  break;
+                case "2":
+                  slot2.text = letterText.text;
+                  break;
+                case "3":
+                  slot3.text = letterText.text;
+                  break;
+                case "4":
+                  slot4.text = letterText.text;
+                  break;
+                case "5":
+                  slot5.text = letterText.text;
+                  break;
+                default:
+                  break;
+              }
 
 
-            }
-            
-        }
+          }
+          
+      }
 
     }
 }
