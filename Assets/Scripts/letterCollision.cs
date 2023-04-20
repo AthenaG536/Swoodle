@@ -14,18 +14,22 @@ public class letterCollision : MonoBehaviour
 
     public Rigidbody projectile;
     Vector3 startingPosition = new Vector3(0.25f, 1.12f, 31f);
+    Vector3 startingRotation = new Vector3(0f, 0f, 0f);
 
 
     // public Transform 
     void OnCollisionEnter(Collision collisionInfo) {
-      if(collisionInfo.collider.name == "Ground"){
+      if(collisionInfo.collider.name == "Ground" && projectile && projectile.position.z > 32){
         // resets the spring joint for the slingshot
-        springJoint.breakForce = Mathf.Infinity;
+        if(springJoint) springJoint.breakForce = Mathf.Infinity;
+        Debug.Log("letter block flung");
 
         // Reset the position of the projectile
         projectile.velocity = Vector3.zero;
         projectile.angularVelocity = Vector3.zero;
-        projectile.transform.position = startingPosition;
+        projectile.position = startingPosition;
+        projectile.rotation = Quaternion.identity;
+
         // springJoint.connectedAnchor = startingPosition;
 
       }
