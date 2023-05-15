@@ -11,6 +11,8 @@ public class letterCollision : MonoBehaviour
     public TMP_Text slot4;
     public TMP_Text slot5;
     public SpringJoint springJoint;
+    public AudioSource groundCollideSound;
+    public AudioSource letterCollideSound;
 
     public Rigidbody projectile;
     Vector3 startingPosition = new Vector3(0.25f, 1.12f, 31f);
@@ -19,22 +21,29 @@ public class letterCollision : MonoBehaviour
 
     // public Transform 
     void OnCollisionEnter(Collision collisionInfo) {
-      if(collisionInfo.collider.name == "Ground" && projectile && projectile.position.z > 32){
-        // resets the spring joint for the slingshot
-        if(springJoint) springJoint.breakForce = Mathf.Infinity;
-        Debug.Log("letter block flung");
+      if(collisionInfo.collider.name == "Ground"){
+        if(projectile && (projectile.position.z > 32 || projectile.position.z < 30)){
+          groundCollideSound.Play();  // Sound effect
+        }
+        if(projectile && projectile.position.z > 32){
+          // resets the spring joint for the slingshot
+          if(springJoint) springJoint.breakForce = Mathf.Infinity;
+          Debug.Log("letter block flung");
 
-        // Reset the position of the projectile
-        projectile.velocity = Vector3.zero;
-        projectile.angularVelocity = Vector3.zero;
-        projectile.position = startingPosition;
-        projectile.rotation = Quaternion.identity;
+          // Reset the position of the projectile
+          projectile.velocity = Vector3.zero;
+          projectile.angularVelocity = Vector3.zero;
+          projectile.position = startingPosition;
+          projectile.rotation = Quaternion.identity;
 
-        // springJoint.connectedAnchor = startingPosition;
+          // springJoint.connectedAnchor = startingPosition;
+        }
+
 
       }
 
       if(collisionInfo.collider.tag == "Letter Slot"){
+          letterCollideSound.Play(); // Sound effect
 
           Debug.Log (collisionInfo.collider.name);
           Debug.Log("Letter hit a letter slot");
